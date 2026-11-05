@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="IDENTIGUARD AI — privacy-first identity verification and public safety demonstration platform.">
+  <title>IDENTIGUARD AI | Public Safety Platform</title>
+  <style>
+    :root {
+      --bg:#07111f; --panel:#0d1b2d; --panel2:#10233a; --line:#203750;
+      --text:#edf5ff; --muted:#9db0c7; --blue:#38bdf8; --cyan:#67e8f9;
+      --green:#34d399; --amber:#fbbf24; --red:#fb7185; --shadow:0 18px 50px #0005;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:radial-gradient(circle at 80% 0%,#123253 0,transparent 30%),var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;min-height:100vh}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    .app{display:grid;grid-template-columns:255px 1fr;min-height:100vh}
+    aside{background:#091626;border-right:1px solid var(--line);padding:24px 16px;display:flex;flex-direction:column;gap:24px}
+    .brand{display:flex;align-items:center;gap:12px;padding:0 8px}
+    .logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#0ea5e9,#164e9b);display:grid;place-items:center;box-shadow:0 8px 25px #0ea5e955}
+    .logo svg{width:25px}
+    .brand strong{display:block;letter-spacing:1.1px;font-size:14px}
+    .brand small{color:var(--cyan);font-size:9px;letter-spacing:1.7px}
+    .nav-label{color:#71869f;font-size:10px;letter-spacing:1.7px;padding:0 12px;text-transform:uppercase}
+    nav{display:grid;gap:6px}
+    .nav-btn{border:0;background:transparent;color:#a9bbd0;text-align:left;padding:12px;border-radius:10px;display:flex;gap:12px;align-items:center;font-size:13px}
+    .nav-btn:hover,.nav-btn.active{background:#12304b;color:#fff}
+    .nav-btn.active{box-shadow:inset 3px 0 var(--blue)}
+    .nav-icon{width:20px;text-align:center;color:var(--cyan);font-size:16px}
+    .side-note{margin-top:auto;border:1px solid var(--line);background:#0c1c2e;padding:14px;border-radius:13px}
+    .side-note b{font-size:12px}.side-note p{font-size:11px;color:var(--muted);line-height:1.6;margin:7px 0 0}
+    main{min-width:0;padding:26px 34px 45px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:28px}
+    .eyebrow{color:var(--cyan);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700}
+    h1{font-size:27px;margin:7px 0 5px;letter-spacing:-.6px}
+    .subtitle{color:var(--muted);font-size:13px;margin:0}
+    .top-right{display:flex;align-items:center;gap:12px}
+    .status{border:1px solid #24634f;color:#8cf0c5;background:#0c2c27;padding:8px 11px;border-radius:30px;font-size:11px}
+    .avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#164e9b,#0ea5e9);display:grid;place-items:center;font-weight:700}
+    .page{display:none;animation:fade .25s ease}.page.active{display:block}
+    @keyframes fade{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}
+    .hero{border:1px solid #1c4767;border-radius:20px;padding:28px;background:linear-gradient(115deg,#102e4a,#0d1b2d 68%);display:grid;grid-template-columns:1.4fr .8fr;gap:20px;overflow:hidden;position:relative}
+    .hero:after{content:"";position:absolute;width:300px;height:300px;border:1px solid #38bdf822;border-radius:50%;right:4%;top:-120px;box-shadow:0 0 0 35px #38bdf809,0 0 0 75px #38bdf806}
+    .hero h2{font-size:28px;line-height:1.2;margin:12px 0}.hero p{color:#b4c6da;line-height:1.7;font-size:13px;max-width:590px}
+    .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+    .hero-art{display:grid;place-items:center;position:relative;z-index:1}
+    .shield{width:155px;height:175px;display:grid;place-items:center;filter:drop-shadow(0 0 22px #38bdf855)}
+    .shield svg{width:100%;height:100%}
+    .btn{border:1px solid transparent;border-radius:9px;padding:11px 15px;font-weight:650;font-size:12px;transition:.2s}
+    .btn-primary{background:linear-gradient(135deg,#0ea5e9,#2563eb);color:white;box-shadow:0 7px 20px #0284c733}
+    .btn-primary:hover{filter:brightness(1.12);transform:translateY(-1px)}
+    .btn-secondary{background:#122a42;border-color:#2b4b68;color:#dceeff}
+    .btn-danger{background:#3b1723;border-color:#713044;color:#fecdd3}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:19px 0}
+    .stat,.card{background:linear-gradient(145deg,#102239,#0c1929);border:1px solid var(--line);border-radius:14px}
+    .stat{padding:17px}.stat-top{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}.stat-icon{color:var(--cyan);font-size:17px}
+    .stat strong{display:block;font-size:25px;margin:12px 0 4px}.stat small{color:#7f96af;font-size:10px}
+    .content-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:15px}
+    .card{padding:19px}.card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
+    h3{font-size:14px;margin:0}.muted{color:var(--muted);font-size:11px}
+    .feature-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .feature{border:1px solid #203b56;background:#0b1a2b;padding:14px;border-radius:12px}
+    .feature .symbol{font-size:20px;color:var(--cyan)}.feature b{display:block;font-size:12px;margin:9px 0 5px}.feature p{font-size:10px;color:var(--muted);line-height:1.5;margin:0}
+    .alert{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid #1c3045}.alert:last-child{border:0}.alert-dot{width:8px;height:8px;background:var(--amber);border-radius:50%;margin-top:4px;flex:none}
+    .alert b{font-size:11px}.alert p{font-size:10px;color:var(--muted);margin:4px 0 0;line-height:1.5}
+    .section-head{margin:4px 0 20px}.section-head h2{font-size:22px;margin:8px 0}.section-head p{color:var(--muted);font-size:12px;line-height:1.6}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    .field{display:grid;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:#b8c9dc}
+    input,select,textarea{width:100%;background:#081626;border:1px solid #29415a;color:var(--text);border-radius:8px;padding:11px 12px;outline:none;font-size:12px}
+    input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #38bdf81a}
+    textarea{min-height:90px;resize:vertical}
+    .help{font-size:10px;color:#8298b1;line-height:1.5}
+    .scan-box{min-height:255px;border:1px dashed #326080;border-radius:14px;background:radial-gradient(circle,#12365266,transparent 65%),#091827;display:grid;place-items:center;text-align:center;padding:20px}
+    .fingerprint{font-size:75px;color:var(--cyan);text-shadow:0 0 25px #38bdf877;line-height:1}
+    .scan-title{font-size:14px;font-weight:700;margin:14px 0 6px}.scan-sub{font-size:11px;color:var(--muted);max-width:350px;line-height:1.5}
+    .progress{height:6px;background:#1b3045;border-radius:20px;overflow:hidden;margin:16px auto;width:min(280px,100%);display:none}.progress span{height:100%;width:0;display:block;background:linear-gradient(90deg,#0ea5e9,#67e8f9);transition:width .15s}
+    .result{display:none;margin-top:13px;padding:12px;border-radius:9px;background:#0d3029;border:1px solid #24634f;color:#a7f3d0;font-size:12px;line-height:1.6}
+    .result.warning{background:#332816;border-color:#75591f;color:#fde68a}
+    .upload-preview{max-width:150px;max-height:150px;border-radius:12px;object-fit:cover;display:none;margin:12px auto}
+    .table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:11px}th{text-align:left;color:#8fa5bd;font-weight:600;padding:11px;border-bottom:1px solid var(--line)}td{padding:12px 11px;border-bottom:1px solid #1a2c40;color:#d6e4f2}
+    .pill{display:inline-block;padding:5px 8px;border-radius:20px;font-size:9px;background:#123a35;color:#8ff0c7}.pill.pending{background:#392f18;color:#fcd879}.pill.review{background:#39202a;color:#fda4af}
+    .notice{border:1px solid #66521f;background:#2b2517;color:#f8dfa0;padding:12px;border-radius:10px;font-size:11px;line-height:1.6;margin-bottom:14px}
+    .checkline{display:flex;align-items:flex-start;gap:9px;color:#b7c8da;font-size:11px;line-height:1.5}.checkline input{width:auto;margin-top:1px}
+    .footer{border-top:1px solid var(--line);margin-top:30px;padding-top:16px;color:#71869f;font-size:10px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .toast{position:fixed;right:22px;bottom:22px;background:#123a35;border:1px solid #24634f;color:#c6fbe5;padding:12px 16px;border-radius:10px;font-size:12px;box-shadow:var(--shadow);display:none;z-index:5}
+
+    /* 3D visual models: CSS-only, no external model downloads required */
+    .hero-art{perspective:900px;min-height:230px}
+    .shield-scene{width:230px;height:225px;position:relative;display:grid;place-items:center;perspective:850px;transform-style:preserve-3d}
+    .shield-3d{width:142px;height:166px;position:relative;transform-style:preserve-3d;transform:rotateY(-23deg) rotateX(9deg);animation:shieldFloat 5s ease-in-out infinite}
+    .shield-face{position:absolute;inset:0;clip-path:polygon(50% 0,96% 15%,91% 62%,78% 82%,50% 100%,22% 82%,9% 62%,4% 15%);background:linear-gradient(145deg,#6ee7f9 0%,#087db9 24%,#123b76 67%,#071a37 100%);border:1px solid #9bf4ff;box-shadow:inset 0 0 24px #8beaff88,0 18px 35px #0008;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;transform:translateZ(12px)}
+    .shield-face:before{content:"";position:absolute;inset:9px;clip-path:inherit;border:1px solid #c5faff88;background:linear-gradient(145deg,#ffffff22,transparent 55%);pointer-events:none}
+    .shield-side{position:absolute;inset:5px;background:linear-gradient(90deg,#06325d,#04142d);clip-path:polygon(50% 0,96% 15%,91% 62%,78% 82%,50% 100%,22% 82%,9% 62%,4% 15%);transform:translateZ(-8px) translateY(8px);filter:drop-shadow(12px 15px 10px #0008)}
+    .shield-emblem{font-size:19px;color:#e0fcff;text-shadow:0 0 15px #a5f3fc}
+    .shield-fingerprint{font-size:46px;line-height:1;color:#d9fbff;text-shadow:0 0 18px #67e8f9}
+    .shield-word{font-size:7px;letter-spacing:2px;text-align:center;line-height:1.6;color:#d8f8ff;font-weight:800}
+    .shield-glow{position:absolute;inset:25px;border-radius:50%;background:#0ea5e9;filter:blur(48px);opacity:.24;transform:translateZ(-35px)}
+    .orbit{position:absolute;border:1px solid #67e8f955;border-radius:50%;transform:rotateX(68deg) rotateZ(-22deg)}
+    .orbit-one{width:210px;height:95px;animation:orbitSpin 12s linear infinite}
+    .orbit-two{width:185px;height:120px;transform:rotateX(72deg) rotateY(48deg);border-color:#38bdf833}
+    .orbit-dot{position:absolute;width:9px;height:9px;border-radius:50%;background:#a5f3fc;box-shadow:0 0 17px #67e8f9;right:20px;top:57px}
+    @keyframes shieldFloat{0%,100%{transform:translateY(0) rotateY(-23deg) rotateX(9deg)}50%{transform:translateY(-11px) rotateY(23deg) rotateX(3deg)}}
+    @keyframes orbitSpin{to{transform:rotateX(68deg) rotateZ(338deg)}}
+    .fingerprint-model,.iris-model,.camera-model{width:112px;height:112px;margin:0 auto 6px;position:relative;display:grid;place-items:center;perspective:500px}
+    .fp-ring{position:absolute;width:91px;height:91px;border-radius:28px;background:linear-gradient(145deg,#1b719c,#07182c 70%);border:1px solid #5de1f7;box-shadow:inset 5px 5px 12px #9beaff44,inset -7px -8px 14px #0009,0 12px 20px #0008;transform:rotateX(55deg) rotateZ(-35deg);animation:scannerTilt 5s ease-in-out infinite}
+    .fp-ring:before,.fp-ring:after{content:"";position:absolute;inset:12px;border:2px solid #7deeff;border-radius:45% 45% 42% 42%;opacity:.8}
+    .fp-ring:after{inset:23px;border-color:#d5fbff;border-bottom-color:transparent;border-radius:50%}
+    .fp-core{position:relative;font-size:38px;color:#d9fbff;text-shadow:0 0 16px #38bdf8;transform:translateZ(25px)}
+    @keyframes scannerTilt{50%{transform:rotateX(48deg) rotateZ(-25deg) translateY(-5px)}}
+    .iris-lens{width:83px;height:83px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#b9f5ff,#1686bb 18%,#06365c 42%,#020a17 68%);border:5px solid #427c9d;box-shadow:inset 0 0 15px #a5f3fc99,0 12px 25px #0009,0 0 24px #38bdf855;transform:rotateX(17deg);animation:lensPulse 4s ease-in-out infinite}
+    .iris-pupil{width:27px;height:27px;border-radius:50%;background:radial-gradient(circle,#000 0 43%,#071b2d 48%,#53c7e5 70%,#0a3658 74%);box-shadow:0 0 12px #020617}
+    .lens-glint{position:absolute;width:19px;height:9px;border-radius:50%;background:#e0fbff;opacity:.75;filter:blur(3px);top:24px;right:25px;transform:rotate(-35deg)}
+    @keyframes lensPulse{50%{box-shadow:inset 0 0 23px #a5f3fcbb,0 12px 25px #0009,0 0 34px #38bdf899}}
+    .camera-body{width:89px;height:59px;border-radius:13px;background:linear-gradient(145deg,#35789a,#102b46 58%,#071626);border:1px solid #6bdcf3;box-shadow:inset 3px 3px 8px #b8f3ff55,0 13px 22px #0009;transform:rotateY(-20deg) rotateX(12deg)}
+    .camera-body:before{content:"";position:absolute;width:28px;height:10px;top:-9px;left:12px;background:#28617f;border:1px solid #5bbbd5;border-radius:5px 5px 0 0}
+    .camera-body span{position:absolute;width:7px;height:7px;border-radius:50%;background:#67e8f9;right:10px;top:10px;box-shadow:0 0 9px #67e8f9}
+    .camera-lens{position:absolute;width:39px;height:39px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#bff8ff,#1686bb 18%,#061a31 58%,#020812 70%);border:4px solid #77cce0;box-shadow:0 0 17px #38bdf877,inset 0 0 10px #9defff;transform:translateZ(17px)}
+    .feature{transition:transform .25s,border-color .25s;transform-style:preserve-3d}
+    .feature:hover{transform:perspective(650px) rotateX(3deg) rotateY(-4deg) translateY(-4px);border-color:#3d8eb4;box-shadow:0 15px 30px #0004}
+    .stat{transform-style:preserve-3d;transition:transform .2s}
+    .stat:hover{transform:perspective(700px) rotateX(3deg) translateY(-3px)}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+
+    @media(max-width:1000px){.app{grid-template-columns:215px 1fr}main{padding:22px}.stats{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:720px){.app{grid-template-columns:1fr}aside{padding:13px;position:sticky;top:0;z-index:4;border-right:0;border-bottom:1px solid var(--line)}.brand{padding:0 5px}.nav-label,.side-note{display:none}nav{display:flex;overflow-x:auto}.nav-btn{white-space:nowrap;padding:9px 11px;font-size:11px}.nav-icon{display:none}main{padding:19px 14px 35px}.topbar{margin-bottom:20px}.hero{grid-template-columns:1fr;padding:22px}.hero-art{display:none}.hero h2{font-size:23px}.content-grid,.two-col{grid-template-columns:1fr}.stats{gap:9px}.stat{padding:13px}.stat strong{font-size:22px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.top-right .status{display:none}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M12 2 20 5v6c0 5-3.4 9-8 11-4.6-2-8-6-8-11V5l8-3Z"/><path d="M8 12c0-2.4 1.6-4 4-4s4 1.6 4 4M9 15c.6 1.2 1.6 2 3 2s2.4-.8 3-2"/></svg>
+      </div>
+      <div><strong>IDENTIGUARD AI</strong><small>PUBLIC SAFETY PLATFORM</small></div>
+    </div>
+    <div class="nav-label">Workspace</div>
+    <nav>
+      <button class="nav-btn active" data-page="overview"><span class="nav-icon">◈</span>Overview</button>
+      <button class="nav-btn" data-page="register"><span class="nav-icon">＋</span>Citizen Registration</button>
+      <button class="nav-btn" data-page="verify"><span class="nav-icon">⌁</span>Biometric Demo</button>
+      <button class="nav-btn" data-page="safe"><span class="nav-icon">♡</span>SAFESEARCH</button>
+      <button class="nav-btn" data-page="officer"><span class="nav-icon">▤</span>Officer Dashboard</button>
+      <button class="nav-btn" data-page="privacy"><span class="nav-icon">⬡</span>Privacy & Security</button>
+    </nav>
+    <div class="side-note">
+      <b>DEMO ENVIRONMENT</b>
+      <p>This prototype uses synthetic records and simulated biometric results. It is not connected to government databases or real scanners.</p>
+    </div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">Secure identity • Safer communities</div>
+        <h1 id="pageTitle">Platform Overview</h1>
+        <p class="subtitle" id="pageSubtitle">A privacy-first public safety technology demonstration.</p>
+      </div>
+      <div class="top-right"><span class="status">● DEMO SYSTEM ONLINE</span><div class="avatar">IG</div></div>
+    </header>
+
+    <section class="page active" id="overview">
+      <div class="hero">
+        <div>
+          <div class="eyebrow">One identity. Safer communities.</div>
+          <h2>Identity verification<br>with people at the centre.</h2>
+          <p>IDENTIGUARD AI demonstrates how responsible identity verification, missing-person case management and authorized emergency workflows can work together — with privacy and human review built in.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="showPage('verify')">Explore verification →</button>
+            <button class="btn btn-secondary" onclick="showPage('safe')">Open SAFESEARCH</button>
+          </div>
+        </div>
+        <div class="hero-art">
+          <div class="shield-scene" aria-label="Animated 3D identity protection shield">
+            <div class="shield-3d">
+              <div class="shield-face">
+                <div class="shield-emblem">✦</div>
+                <div class="shield-fingerprint">◎</div>
+                <div class="shield-word">IDENTITY<br>PROTECTED</div>
+              </div>
+              <div class="shield-side"></div>
+              <div class="shield-glow"></div>
+            </div>
+            <span class="orbit orbit-one"></span><span class="orbit orbit-two"></span>
+            <span class="orbit-dot"></span>
+          </div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-top">Demo profiles <span class="stat-icon">♙</span></div><strong id="profileCount">03</strong><small>Synthetic records only</small></div>
+        <div class="stat"><div class="stat-top">Verification tests <span class="stat-icon">⌁</span></div><strong id="verifyCount">00</strong><small>Local demo attempts</small></div>
+        <div class="stat"><div class="stat-top">Open safety cases <span class="stat-icon">♡</span></div><strong id="caseCount">01</strong><small>Demo case records</small></div>
+        <div class="stat"><div class="stat-top">Security events <span class="stat-icon">⬡</span></div><strong id="eventCount">04</strong><small>Illustrative activity</small></div>
+      </div>
+      <div class="content-grid">
+        <div class="card">
+          <div class="card-head"><h3>Platform modules</h3><span class="muted">Product ecosystem</span></div>
+          <div class="feature-list">
+            <div class="feature"><div class="symbol">⌁</div><b>IDENTIGUARD VERIFY</b><p>Consent-based identity verification demonstrations.</p></div>
+            <div class="feature"><div class="symbol">♡</div><b>SAFESEARCH</b><p>Missing-person case reporting and authorized review.</p></div>
+            <div class="feature"><div class="symbol">✚</div><b>CARE</b><p>Hospital and vulnerable-person support workflows.</p></div>
+            <div class="feature"><div class="symbol">⬡</div><b>SHIELD</b><p>Privacy, permissions and audit-focused security.</p></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Recent activity</h3><span class="muted">Illustrative</span></div>
+          <div class="alert"><span class="alert-dot"></span><div><b>Demo profile created</b><p>Synthetic profile IG-DEMO-001 added.</p></div></div>
+          <div class="alert"><span class="alert-dot" style="background:var(--green)"></span><div><b>Security controls active</b><p>Role and consent examples enabled.</p></div></div>
+          <div class="alert"><span class="alert-dot" style="background:var(--blue)"></span><div><b>SAFESEARCH case example</b><p>One fictional case available for review.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="register">
+      <div class="section-head"><div class="eyebrow">Citizen services / onboarding</div><h2>Citizen Registration</h2><p>Create a fictional demonstration profile. Do not enter real Aadhaar, PAN, phone numbers, addresses or biometric data.</p></div>
+      <div class="notice">DEMO SAFETY: This form stores sample information only in this browser session. It does not create a legally verified identity or connect to UIDAI, PAN, driving licence or other government services.</div>
+      <div class="card">
+        <form id="registrationForm" class="form-grid">
+          <div class="field"><label for="fullName">Demo name</label><input id="fullName" required placeholder="e.g. Demo Citizen"></div>
+          <div class="field"><label for="demoId">Demo reference ID</label><input id="demoId" placeholder="Auto-generated if blank"></div>
+          <div class="field"><label for="ageGroup">Age group</label><select id="ageGroup"><option>Adult (18+)</option><option>Child (under 18) — guardian workflow</option><option>Senior citizen</option></select></div>
+          <div class="field"><label for="verificationMethod">Preferred verification method</label><select id="verificationMethod"><option>Fingerprint (simulated)</option><option>Face (test image)</option><option>Iris (simulated)</option><option>Document verification (mock)</option></select></div>
+          <div class="field full"><label class="checkline"><input type="checkbox" id="consent" required> I understand this is a demonstration profile using fictional information, not a real identity registration.</label></div>
+          <div class="field full"><button class="btn btn-primary" type="submit">Create demo profile</button></div>
+        </form>
+      </div>
+      <div class="card" style="margin-top:15px"><div class="card-head"><h3>Demo profile records</h3><span class="muted">Current session</span></div><div class="table-wrap"><table><thead><tr><th>Reference</th><th>Name</th><th>Age group</th><th>Method</th><th>Status</th></tr></thead><tbody id="profileTable"><tr><td>IG-DEMO-001</td><td>Alex Demo</td><td>Adult (18+)</td><td>Fingerprint</td><td><span class="pill">Demo only</span></td></tr><tr><td>IG-DEMO-002</td><td>Sam Sample</td><td>Senior citizen</td><td>Face</td><td><span class="pill">Demo only</span></td></tr><tr><td>IG-DEMO-003</td><td>Child Sample</td><td>Child / guardian</td><td>Document</td><td><span class="pill">Demo only</span></td></tr></tbody></table></div></div>
+    </section>
+
+    <section class="page" id="verify">
+      <div class="section-head"><div class="eyebrow">IDENTIGUARD VERIFY</div><h2>Biometric demonstration</h2><p>Try the simulated scanner experiences. These controls do not identify a real person or compare against a real biometric database.</p></div>
+      <div class="notice">A successful demo result means only that the interface simulation completed. It is not proof of identity. Real biometric systems require certified hardware, validated algorithms, lawful processing and independent accuracy testing.</div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head"><h3>Fingerprint scanner</h3><span class="pill pending">Simulation</span></div>
+          <div class="scan-box"><div><div class="fingerprint-model" aria-label="3D fingerprint scanner model"><div class="fp-ring"></div><div class="fp-core">⌁</div></div><div class="scan-title" id="fingerTitle">Ready to scan</div><div class="scan-sub" id="fingerText">Press the button to run a simulated fingerprint scan.</div><div class="progress" id="fingerProgress"><span id="fingerBar"></span></div><div class="result" id="fingerResult"></div></div></div>
+          <button class="btn btn-primary" style="width:100%;margin-top:13px" onclick="simulateScan('finger')">Start simulated scan</button>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Iris scanner</h3><span class="pill pending">Simulation</span></div>
+          <div class="scan-box"><div><div class="iris-model" aria-label="3D iris scanner model"><div class="iris-lens"><div class="iris-pupil"></div></div><span class="lens-glint"></span></div><div class="scan-title" id="irisTitle">Iris scanner preview</div><div class="scan-sub" id="irisText">Iris scanning requires specialized hardware. This is a UI-only demonstration.</div><div class="progress" id="irisProgress"><span id="irisBar"></span></div><div class="result" id="irisResult"></div></div></div>
+          <button class="btn btn-secondary" style="width:100%;margin-top:13px" onclick="simulateScan('iris')">Preview iris workflow</button>
+        </div>
+      </div>
+      <div class="card" style="margin-top:15px">
+        <div class="card-head"><h3>Face test-image interface</h3><span class="pill pending">No identity matching</span></div>
+        <div class="two-col">
+          <div><p class="muted">Choose a non-sensitive sample image to preview the upload interface. The file stays in this page and is not sent to a server.</p><input type="file" id="faceFile" accept="image/*"><img class="upload-preview" id="facePreview" alt="Selected test image preview"><p class="help">Use a generated or synthetic test image, not another person's photo without permission.</p></div>
+          <div><div class="scan-box" style="min-height:180px"><div><div class="camera-model" aria-label="3D camera model"><div class="camera-body"><span></span></div><div class="camera-lens"></div></div><div class="scan-title">Image preview only</div><div class="scan-sub">This prototype does not perform facial recognition, liveness detection or identity matching.</div></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="safe">
+      <div class="section-head"><div class="eyebrow">IDENTIGUARD SAFESEARCH</div><h2>Missing-person case support</h2><p>Record a fictional case for demonstration. Real cases must be handled through authorized safeguarding and law-enforcement procedures.</p></div>
+      <div class="notice">Protect missing people from further harm. Do not publish a person's confidential location or expose family/contact information. A potential match must be reviewed by authorized personnel before any action.</div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head"><h3>Register a demo case</h3><span class="muted">Fictional records only</span></div>
+          <form id="caseForm" class="form-grid">
+            <div class="field full"><label for="caseName">Fictional case name</label><input id="caseName" required placeholder="e.g. Taylor Example"></div>
+            <div class="field"><label for="caseCategory">Case category</label><select id="caseCategory"><option>Missing adult</option><option>Missing child — safeguarding workflow</option><option>Missing senior citizen</option><option>Unidentified patient</option></select></div>
+            <div class="field"><label for="caseRef">Case reference</label><input id="caseRef" placeholder="Auto-generated if blank"></div>
+            <div class="field full"><label for="caseNotes">Non-sensitive case notes</label><textarea id="caseNotes" placeholder="Enter fictional, non-sensitive details only."></textarea></div>
+            <div class="field full"><label class="checkline"><input type="checkbox" id="caseConsent" required> I confirm this is fictional demonstration information.</label></div>
+            <div class="field full"><button class="btn btn-primary" type="submit">Create demo case</button></div>
+          </form>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>SAFESEARCH workflow</h3></div>
+          <div class="alert"><span class="alert-dot"></span><div><b>1. Report received</b><p>Authorized staff record the case and confirm the reporting process.</p></div></div>
+          <div class="alert"><span class="alert-dot"></span><div><b>2. Safeguarding review</b><p>Review urgency, consent, guardian authority and safety risks.</p></div></div>
+          <div class="alert"><span class="alert-dot"></span><div><b>3. Authorized verification</b><p>Use permitted records and human review for possible matches.</p></div></div>
+          <div class="alert"><span class="alert-dot"></span><div><b>4. Safe reunification</b><p>Coordinate through authorized responders and protect confidential details.</p></div></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:15px"><div class="card-head"><h3>Case register</h3><span class="muted">Demonstration data</span></div><div class="table-wrap"><table><thead><tr><th>Case ID</th><th>Case name</th><th>Category</th><th>Status</th></tr></thead><tbody id="caseTable"><tr><td>SAFE-001</td><td>Jordan Example</td><td>Missing senior citizen</td><td><span class="pill pending">Under review</span></td></tr></tbody></table></div></div>
+    </section>
+
+    <section class="page" id="officer">
+      <div class="section-head"><div class="eyebrow">IDENTIGUARD COMMAND</div><h2>Authorized officer dashboard</h2><p>Illustrative case oversight interface. This page does not authenticate an actual police officer or grant access to real cases.</p></div>
+      <div class="notice">DEMO ROLE ONLY: Production access must require verified institutional identity, strong authentication, explicit authorization, purpose limitation and immutable audit logging.</div>
+      <div class="stats">
+        <div class="stat"><div class="stat-top">Cases awaiting review</div><strong id="officerCases">01</strong><small>Fictional case records</small></div>
+        <div class="stat"><div class="stat-top">Identity checks</div><strong id="officerChecks">00</strong><small>Simulated attempts</small></div>
+        <div class="stat"><div class="stat-top">Manual reviews</div><strong>01</strong><small>Illustrative queue</small></div>
+        <div class="stat"><div class="stat-top">Access alerts</div><strong>00</strong><small>Demo session</small></div>
+      </div>
+      <div class="card"><div class="card-head"><h3>Case review queue</h3><span class="muted">No real identity matches</span></div><div class="table-wrap"><table><thead><tr><th>Reference</th><th>Case type</th><th>Review action</th><th>Status</th></tr></thead><tbody id="officerTable"><tr><td>SAFE-001</td><td>Missing senior citizen</td><td><button class="btn btn-secondary" onclick="toast('Demo review opened. No real case data accessed.')">Review</button></td><td><span class="pill pending">Pending</span></td></tr></tbody></table></div></div>
+    </section>
+
+    <section class="page" id="privacy">
+      <div class="section-head"><div class="eyebrow">IDENTIGUARD SHIELD</div><h2>Privacy, consent & security</h2><p>Privacy is a core product requirement, not an optional feature.</p></div>
+      <div class="feature-list">
+        <div class="feature"><div class="symbol">⬡</div><b>Data minimization</b><p>Collect only information required for a defined and lawful purpose.</p></div>
+        <div class="feature"><div class="symbol">▣</div><b>Encryption</b><p>Protect data in transit and at rest with managed encryption keys.</p></div>
+        <div class="feature"><div class="symbol">♙</div><b>Access controls</b><p>Separate citizen, institutional, officer, administrator and auditor permissions.</p></div>
+        <div class="feature"><div class="symbol">◷</div><b>Audit trails</b><p>Record who accessed sensitive information, when and for what approved purpose.</p></div>
+        <div class="feature"><div class="symbol">♡</div><b>Safeguarding</b><p>Protect children and vulnerable people from unauthorized disclosure or contact.</p></div>
+        <div class="feature"><div class="symbol">⌑</div><b>Human review</b><p>Do not make high-impact decisions solely from an automated biometric result.</p></div>
+      </div>
+      <div class="card" style="margin-top:15px">
+        <h3>Production-readiness checklist</h3>
+        <div style="display:grid;gap:12px;margin-top:15px">
+          <label class="checkline"><input type="checkbox"> Complete legal basis and privacy impact assessment</label>
+          <label class="checkline"><input type="checkbox"> Document consent, guardian and withdrawal workflows</label>
+          <label class="checkline"><input type="checkbox"> Threat model and independent security review</label>
+          <label class="checkline"><input type="checkbox"> Biometric accuracy, bias and spoofing evaluation</label>
+          <label class="checkline"><input type="checkbox"> Data retention, deletion and breach-response procedures</label>
+          <label class="checkline"><input type="checkbox"> Approved institutional agreements and API permissions</label>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer"><span>© 2026 IDENTIGUARD AI • Concept demonstration</span><span>Privacy-first design • Synthetic data • Not a government service</span></div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+  const titles = {
+    overview:["Platform Overview","A privacy-first public safety technology demonstration."],
+    register:["Citizen Registration","Create a synthetic demonstration identity profile."],
+    verify:["Biometric Demonstration","Explore simulated fingerprint, face and iris interfaces."],
+    safe:["SAFESEARCH","Missing-person case support and safe case management."],
+    officer:["Officer Dashboard","Illustrative authorized institutional workflow."],
+    privacy:["Privacy & Security","Responsible data handling and production safeguards."]
+  };
+  let verificationCount = 0;
+  let profiles = 3;
+  let cases = 1;
+  let caseNumber = 1;
+
+  function showPage(page) {
+    document.querySelectorAll(".page").forEach(el => el.classList.toggle("active", el.id === page));
+    document.querySelectorAll(".nav-btn").forEach(el => el.classList.toggle("active", el.dataset.page === page));
+    document.getElementById("pageTitle").textContent = titles[page][0];
+    document.getElementById("pageSubtitle").textContent = titles[page][1];
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  document.querySelectorAll(".nav-btn").forEach(btn => btn.addEventListener("click",()=>showPage(btn.dataset.page)));
+
+  function toast(message) {
+    const el=document.getElementById("toast");
+    el.textContent=message; el.style.display="block";
+    clearTimeout(window.toastTimer);
+    window.toastTimer=setTimeout(()=>el.style.display="none",2800);
+  }
+
+  function simulateScan(type) {
+    const prefix=type==="finger"?"finger":"iris";
+    const title=document.getElementById(prefix+"Title");
+    const text=document.getElementById(prefix+"Text");
+    const progress=document.getElementById(prefix+"Progress");
+    const bar=document.getElementById(prefix+"Bar");
+    const result=document.getElementById(prefix+"Result");
+    const button=event.currentTarget;
+    button.disabled=true;
+    button.textContent="Processing demonstration…";
+    title.textContent=type==="finger"?"Reading simulated fingerprint":"Running iris workflow preview";
+    text.textContent="Demonstration sequence in progress. No biometric data is being captured.";
+    result.style.display="none"; progress.style.display="block"; bar.style.width="0%";
+    let value=0;
+    const timer=setInterval(()=>{
+      value+=10; bar.style.width=value+"%";
+      if(value>=100){
+        clearInterval(timer);
+        title.textContent="Demo completed";
+        text.textContent="The interface simulation has finished.";
+        result.className="result warning";
+        result.textContent="SIMULATED RESULT — No identity was verified. No real biometric sample was captured or matched.";
+        result.style.display="block"; button.disabled=false;
+        button.textContent=type==="finger"?"Run simulated scan again":"Preview iris workflow again";
+        verificationCount++;
+        document.getElementById("verifyCount").textContent=String(verificationCount).padStart(2,"0");
+        document.getElementById("officerChecks").textContent=String(verificationCount).padStart(2,"0");
+      }
+    },110);
+  }
+
+  document.getElementById("faceFile").addEventListener("change",function(e){
+    const file=e.target.files[0], preview=document.getElementById("facePreview");
+    if(!file) return;
+    if(!file.type.startsWith("image/")){toast("Please select an image file.");return;}
+    const reader=new FileReader();
+    reader.onload=()=>{preview.src=reader.result;preview.style.display="block";toast("Image preview loaded locally. No face matching performed.");};
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById("registrationForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    if(!document.getElementById("consent").checked){toast("Please confirm the demo notice.");return;}
+    const name=document.getElementById("fullName").value.trim();
+    const age=document.getElementById("ageGroup").value;
+    const method=document.getElementById("verificationMethod").value;
+    const ref=document.getElementById("demoId").value.trim()||"IG-DEMO-"+String(Date.now()).slice(-5);
+    const row=document.createElement("tr");
+    [ref,name,age,method].forEach(v=>{const td=document.createElement("td");td.textContent=v;row.appendChild(td);});
+    const status=document.createElement("td");status.innerHTML='<span class="pill">Demo only</span>';row.appendChild(status);
+    document.getElementById("profileTable").prepend(row);
+    profiles++;document.getElementById("profileCount").textContent=String(profiles).padStart(2,"0");
+    this.reset();toast("Synthetic demo profile created.");
+  });
+
+  document.getElementById("caseForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    if(!document.getElementById("caseConsent").checked){toast("Please confirm this is fictional demo information.");return;}
+    const name=document.getElementById("caseName").value.trim();
+    const category=document.getElementById("caseCategory").value;
+    const ref=document.getElementById("caseRef").value.trim()||"SAFE-"+String(Date.now()).slice(-5);
+    const row=document.createElement("tr");
+    [ref,name,category].forEach(v=>{const td=document.createElement("td");td.textContent=v;row.appendChild(td);});
+    const status=document.createElement("td");status.innerHTML='<span class="pill pending">Under review</span>';row.appendChild(status);
+    document.getElementById("caseTable").prepend(row);
+    const officerRow=document.createElement("tr");
+    const c1=document.createElement("td");c1.textContent=ref;
+    const c2=document.createElement("td");c2.textContent=category;
+    const c3=document.createElement("td");const btn=document.createElement("button");btn.className="btn btn-secondary";btn.textContent="Review";btn.onclick=()=>toast("Demo review opened. No real case data accessed.");c3.appendChild(btn);
+    const c4=document.createElement("td");c4.innerHTML='<span class="pill pending">Pending</span>';
+    [c1,c2,c3,c4].forEach(td=>officerRow.appendChild(td));
+    document.getElementById("officerTable").prepend(officerRow);
+    cases++;caseNumber++;
+    document.getElementById("caseCount").textContent=String(cases).padStart(2,"0");
+    document.getElementById("officerCases").textContent=String(cases).padStart(2,"0");
+    this.reset();toast("Fictional SAFESEARCH case created.");
+  });
+</script>
+</body>
+</html>
